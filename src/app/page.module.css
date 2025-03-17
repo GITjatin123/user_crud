@@ -1,0 +1,20 @@
+.inlineFormDiv {
+  border: 1px solid white;
+  border-radius: 10px;
+  /*margin: 50px;*/
+  box-shadow: 0 0 27px lightgrey;
+  background-color: var(--theme-color2);
+}
+.customInfoDiv{
+  /*border: 1px solid var(--theme-color2);*/
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #ffffff;
+
+}
+.customInfoDiv :global(.info-box){
+   padding-left: 0 !important;
+}
+.customInfoDiv :global(.info-box .inner){
+  border-bottom: 1px solid var(--theme-color2);
+}

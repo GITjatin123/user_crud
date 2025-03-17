@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model UserRole {
+  id   Int    @id @default(autoincrement())
+  name String @unique(map: "user_role_name_key")
+
+  users User[]
+}
+
+model Country {
+  id        Int    @id @default(autoincrement())
+  iso       String
+  name      String
+  nicename  String
+  iso3      String?
+  numcode   Int?
+  phonecode Int?
+
+  states State[]
+  cities City[]
+  users  User[]
+}
+
+model State {
+  id         Int    @id @default(autoincrement())
+  countryId  Int
+  name       String
+
+  country Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  cities  City[]
+  users   User[]
+}
+
+model City {
+  id        Int    @id @default(autoincrement())
+  countryId Int
+  stateId   Int
+  name      String
+
+  country Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  state   State   @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  users   User[]
+}
+
+model User {
+  id         Int     @id @default(autoincrement())
+  refNo      Int  @unique
+  name       String
+  email      String  @unique(map: "users_email_key")
+  countryId  Int
+  stateId    Int?
+  cityId     Int?
+  phone      String?
+  password   String
+  img        String?
+  status     String  @default("active")
+  userRoleId Int
+  addedById    Int?
+  updatedById   Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  country  Country  @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  state    State?    @relation(fields: [stateId], references: [id], onDelete: Cascade)
+  city     City?    @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  userRole UserRole @relation(fields: [userRoleId], references: [id], onDelete: Cascade)
+
+  addedBy   User? @relation(fields: [addedById], references: [id], onDelete: SetNull, name: "AddedByUser")
+  updatedBy User? @relation(fields: [updatedById], references: [id], onDelete: SetNull, name: "UpdatedByUser")
+
+  addedUsers    User[] @relation("AddedByUser")
+  UpdatedUser    User[] @relation("UpdatedByUser")
+  messages EmployeeMessage[]
+}
+
+model EmployeeMessage {
+  id          Int    @id @default(autoincrement())
+  refNo       Int @unique
+  title       String
+  description String?
+  status      String  @default("pending")
+  userId  Int
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+}
