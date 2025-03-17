@@ -1,7 +1,12 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
-
+### Before doing anything you must need to get the code on your sytem
+use the following https to clone the code
+```cmd
+git clone https://github.com/GITjatin123/user_crud.git
+cd user_crud
+```
 First, run the development server:
 
 ```bash
