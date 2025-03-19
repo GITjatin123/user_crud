@@ -54,8 +54,8 @@ export default function Login() {
                             <Form onSubmit={handleSubmit} className="login-form">
                                 <div className="form-floating mb-3">
                                     <input type="email" className="form-control" id="floatingInput" name={'email'}
-                                           placeholder="email" onChange={(e) => setEmail(e.target.value)}/>
-                                    <label htmlFor="floatingInput" style={{color: "grey"}}>email</label>
+                                           placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
+                                    <label htmlFor="floatingInput" style={{color: "grey"}}>Email</label>
                                 </div>
                                 <div className="form-floating mb-3">
                                     <input type="password" className="form-control" id="floatingPassword"

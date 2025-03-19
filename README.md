@@ -8,7 +8,6 @@ git clone https://github.com/GITjatin123/user_crud.git
 cd user_crud
 ```
 First, run the development server:
-
 ```bash
 npm run dev
 # or
