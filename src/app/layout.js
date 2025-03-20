@@ -6,31 +6,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowUp} from "@fortawesome/free-solid-svg-icons";
 import './globals.css';
 import {SessionProvider} from "next-auth/react";
-import {signOut} from "next-auth/react";
-import {useRouter} from "next/navigation";
-import {useEffect, useState} from "react";
-
+import {Theme} from "@/context/ThemeContext";
+import {CheckUser} from "@/context/UserContext"
 
 export default function RootLayout({children}) {
-    const router = useRouter();
-    const [checklog, setChecklog] = useState(true)
-    useEffect(() => {
-        const checkLogin = async () => {
-            try {
-                const res = await fetch('/api/ServerSession');
-                if (res.status === 404) {
-                    setChecklog(false)
-                    await signOut(
-                        {redirect: false}
-                    )
-                    router.push('/login')
-                }
-            } catch (err) {
-                console.log('logout err', err)
-            }
-        }
-        checkLogin();
-    }, [checklog]);
     return (
         <html lang="en">
         <Head>
@@ -38,7 +17,11 @@ export default function RootLayout({children}) {
         </Head>
         <body>
         <SessionProvider>
-            {children}
+            <CheckUser>
+                <Theme>
+                    {children}
+                </Theme>
+            </CheckUser>
         </SessionProvider>
         <div className="scroll-to-top scroll-to-target" data-target="html" style={{display: 'block'}}>
             <FontAwesomeIcon icon={faArrowUp}></FontAwesomeIcon>

@@ -1,15 +1,20 @@
 "use client"
-import {useEffect, useState,} from "react";
+import {useContext, useEffect, useState,} from "react";
 import {Header} from "@/components/Header";
 import {Footer} from "@/components/Footer";
 import Image from "next/image";
 import CustomMyImg2 from "../../../public/assets/images/welcome_one_person_photo_1704848548.jpg";
 import {capitalizeFirstLetter} from "@/helper/textHelper.js"
 import styles from "../page.module.css"
+import {UserContext} from '@/context/UserContext'
 export default function Profile() {
     const [data, setData] = useState()
     const [error, setError] = useState()
-
+    const {checkLogin} = useContext(UserContext)
+    // console.log(checkLogin)
+    useEffect(() => {
+        checkLogin();
+    }, []);
     useEffect( () => {
         fetch('/api/ServerSession/').then((res) => res.json()).then((userData) => {
             if (userData.error) {

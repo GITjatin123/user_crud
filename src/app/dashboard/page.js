@@ -6,9 +6,14 @@ import {faAllergies, faShop} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import CustomMyImg from "../../../public/assets/images/welcome_one_photo1_1704823739.jpg";
 import CustomMyImg2 from "../../../public/assets/images/welcome_one_person_photo_1704848548.jpg";
-import {useState,useEffect} from "react";
-import Link from "next/link";
+import {useState,useContext,useEffect} from "react";
+import {UserContext} from "@/context/UserContext";
+
 export default function about() {
+    const {checkLogin} = useContext(UserContext);
+    useEffect(() => {
+        checkLogin()
+    }, []);
     const [error,setError] = useState(null)
     const [data,setData] = useState(null)
     useEffect(()=>{

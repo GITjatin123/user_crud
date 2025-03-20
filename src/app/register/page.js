@@ -3,15 +3,21 @@ import Form from "react-bootstrap/Form";
 import Buttons from "react-bootstrap/Button";
 import Link from "next/link";
 import moduleCss from "@/app/page.module.css";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 import {redirect} from "next/navigation";
 import {Alert, Button, CircularProgress, Snackbar} from "@mui/material";
 import {z} from 'zod'
 import bcrypt from "bcryptjs";
 import {capitalizeFirstLetter, getRandomNumber} from "@/helper/textHelper";
 import {UsersStatus} from "@/commonConstants/constants";
+import {ThemeContext} from "@/context/ThemeContext";
+
 
 export default function Register() {
+    const {themeName} = useContext(ThemeContext)
+    useEffect(()=>{
+        console.log(themeName)
+    },[])
     const [message, setMessage] = useState(false)
     const [load, setload] = useState(false)
     const [open, setOpen] = useState(false);
@@ -73,7 +79,7 @@ export default function Register() {
             const result = registerSchema.safeParse(formData);
             if (!result.success) {
                 const firstError = result.error.errors[0].message;
-                setMessage({ value: firstError, class: "error" });
+                setMessage({value: firstError, class: "error"});
                 return;
             }
             formData.password = await bcrypt.hash(formData.password, 10);
@@ -141,12 +147,14 @@ export default function Register() {
                             <div className="form-floating mb-3">
                                 <Form.Select name={'userRoleId'} className="form-control">
                                     <option value="">Select Designation</option>
-                                    {userRoles ? userRoles.map((data) => <option key={data.id} value={data.id}>{capitalizeFirstLetter(data.name)}</option>) : ''}
+                                    {userRoles ? userRoles.map((data) => <option key={data.id}
+                                                                                 value={data.id}>{capitalizeFirstLetter(data.name)}</option>) : ''}
                                 </Form.Select>
                             </div>
                             <div className="form-floating mb-3">
                                 <Form.Select name={'status'} className="form-control">
-                                    {Object.entries(UsersStatus).map(([key, value]) => (<option key={key} value={value}>{capitalizeFirstLetter(value)}</option>))}
+                                    {Object.entries(UsersStatus).map(([key, value]) => (
+                                        <option key={key} value={value}>{capitalizeFirstLetter(value)}</option>))}
                                 </Form.Select>
                             </div>
                             <div className="form-floating mb-3">
@@ -154,7 +162,7 @@ export default function Register() {
                                              onChange={(e) => setSelectedCountry(e.target.value)}>
                                     <option value="">Select Country</option>
                                     {countries ? countries.map((data) => <option key={data.id}
-                                                                     value={data.id}>{data.name}</option>) : ''}
+                                                                                 value={data.id}>{data.name}</option>) : ''}
                                 </Form.Select>
                             </div>
                             <div className="form-floating mb-3">
@@ -162,14 +170,14 @@ export default function Register() {
                                              onChange={(e) => setSelectedState(e.target.value)}>
                                     <option value="">Select State</option>
                                     {states ? states.map((data) => <option key={data.id}
-                                                                  value={data.id}>{data.name}</option>): ""}
+                                                                           value={data.id}>{data.name}</option>) : ""}
                                 </Form.Select>
                             </div>
                             <div className="form-floating mb-3">
                                 <Form.Select name={'cityId'} className="form-control">
                                     <option value="">Select City</option>
                                     {cities ? cities.map((data) => <option key={data.id}
-                                                                  value={data.id}>{data.name}</option>) : ""}
+                                                                           value={data.id}>{data.name}</option>) : ""}
                                 </Form.Select>
                             </div>
                             <div className="form-floating mb-3">
