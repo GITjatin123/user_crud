@@ -6,25 +6,13 @@ import {faAllergies, faShop} from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import CustomMyImg from "../../../public/assets/images/welcome_one_photo1_1704823739.jpg";
 import CustomMyImg2 from "../../../public/assets/images/welcome_one_person_photo_1704848548.jpg";
-import {useState,useContext,useEffect} from "react";
+import {useContext,useEffect} from "react";
 import {UserContext} from "@/context/UserContext";
 
 export default function about() {
-    const {checkLogin} = useContext(UserContext);
-    useEffect(() => {
-        checkLogin()
-    }, []);
-    const [error,setError] = useState(null)
-    const [data,setData] = useState(null)
+    const {checkLogin ,userData, UserError} = useContext(UserContext);
     useEffect(()=>{
-        fetch("/api/ServerSession").then((res) => res.json()).then((serverData) => {
-            // console.log(serverData + 'server')
-            if (serverData.error) {
-                setError(serverData.error)
-            } else {
-                setData(serverData)
-            }
-        }).catch(() => setError('something went wrong'));
+        checkLogin()
     },[])
     return (
       <>
@@ -32,9 +20,9 @@ export default function about() {
           <section className="page-title" style={{backgroundImage: 'url(assets/images/banner/banner_1704766456.jpg)'}}>
               <div className="auto-container">
                   <div className="title-outer">
-                      <h1 className="title"> {data ? "welcome to dashboard".toUpperCase() : error}</h1>
+                      <h1 className="title"> {userData ? "welcome to dashboard".toUpperCase() : UserError}</h1>
                       <ul className="page-breadcrumb">
-                          <li>{data?.username}</li>
+                          <li>{userData?.username}</li>
                       </ul>
                   </div>
               </div>

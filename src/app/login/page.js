@@ -31,7 +31,7 @@ export default function Login() {
                 setMessageError({class:"error",value:result.error});
             } else {
                 console.log(result)
-                setMessageError({ class: "success", value: 'welcome home page'})
+                setMessageError({ class: "success", value: 'redirecting...'})
                 router.push("/profile");
             }
         } catch (err) {

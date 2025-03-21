@@ -1,20 +1,37 @@
-"use client"
-import {createContext} from "react";
-import {signOut} from "next-auth/react";
-import {useRouter} from "next/navigation";
+"use client";
+import { createContext, useState, useEffect } from "react";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 export const UserContext = createContext();
-export function CheckUser({children}) {
+
+export function CheckUser({ children }) {
     const router = useRouter();
+    const [userData, setUserData] = useState(null);
+    const [UserError, setUserError] = useState(null);
     const checkLogin = async () => {
-        const res = await fetch('/api/ServerSession');
-        if (res.status === 404) {
-            await signOut(
-                {redirect: false}
-            )
-            router.push('/login')
+        try {
+            const res = await fetch('/api/ServerSession');
+            const data = await res.json();
+            if (res.status === 404) {
+                await signOut({ redirect: false });
+                router.push('/login');
+            }else if (data.error) {
+                setUserError(data.error);
+            } else {
+                setUserData(data);
+            }
+        } catch (error) {
+            setUserError("Something went wrong!");
         }
-    }
-    return (<UserContext.Provider value={{checkLogin}}>
-        {children}
-    </UserContext.Provider>)
+    };
+    useEffect(() => {
+        checkLogin();
+    }, []);
+
+    return (
+        <UserContext.Provider value={{ userData, UserError ,checkLogin}}>
+            {children}
+        </UserContext.Provider>
+    );
 }

@@ -4,25 +4,13 @@ import {Header} from "@/components/Header";
 import {Footer} from "@/components/Footer";
 import Image from "next/image";
 import CustomMyImg2 from "../../../public/assets/images/welcome_one_person_photo_1704848548.jpg";
-import {capitalizeFirstLetter} from "@/helper/textHelper.js"
+import {capitalizeFirstLetter} from "@/helper/textHelper"
 import styles from "../page.module.css"
-import {UserContext} from '@/context/UserContext'
+import {UserContext} from '../../context/UserContext'
 export default function Profile() {
-    const [data, setData] = useState()
-    const [error, setError] = useState()
-    const {checkLogin} = useContext(UserContext)
-    // console.log(checkLogin)
+    const { userData, UserError,checkLogin } = useContext(UserContext);
     useEffect(() => {
-        checkLogin();
-    }, []);
-    useEffect( () => {
-        fetch('/api/ServerSession/').then((res) => res.json()).then((userData) => {
-            if (userData.error) {
-                setError(userData.error)
-            } else {
-                setData(userData)
-            }
-        }).catch((err)=>setError('Something went wrong ' , err))
+        checkLogin()
     }, []);
     return (
         <>
@@ -32,9 +20,9 @@ export default function Profile() {
                      style={{backgroundImage: 'url(assets/images/banner/banner_1704766456.jpg)'}}>
                 <div className="auto-container">
                     <div className="title-outer">
-                        <h1 className="title"> {data ? "welcome to profile".toUpperCase() : error}</h1>
+                        <h1 className="title"> {userData ? "welcome to profile".toUpperCase() : UserError}</h1>
                         <ul className="page-breadcrumb">
-                            <li>{data?.name}</li>
+                            <li>{userData?.name}</li>
                         </ul>
                     </div>
                 </div>
@@ -52,21 +40,21 @@ export default function Profile() {
                                 <div className="inner">
                                     <h5 className="title">NAME :
                                         <span className="text ms-1">
-                                            {capitalizeFirstLetter(data?.name)}
+                                            {capitalizeFirstLetter(userData?.name)}
                                         </span>
                                     </h5>
                                 </div>
                                 <div className="inner">
                                     <h5 className="title">EMAIL :
                                         <span className="text ms-1">
-                                            {capitalizeFirstLetter(data?.email)}
+                                            {capitalizeFirstLetter(userData?.email)}
                                         </span>
                                     </h5>
                                 </div>
                                 <div className="inner">
                                     <h5 className="title">PHONE :
                                         <span className="text ms-1">
-                                            {capitalizeFirstLetter(data?.phone)}
+                                            {capitalizeFirstLetter(userData?.phone)}
                                         </span>
                                     </h5>
                                 </div>
